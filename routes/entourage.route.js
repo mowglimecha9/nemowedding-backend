@@ -17,7 +17,7 @@ studentRoute.route('/getEntourage').get((req, res) => {
 
 
 studentRoute.route('/getEntourageByName/:q').get((req, res) => {
-    Entourage.find({ Name: { $regex: req.params.q }, Attending: FALSE },(error, data) => {
+    Entourage.find({ Name: { $regex: req.params.q }, Attending:false},(error, data) => {
      if (error) {
         console.log(error)
        return next(error)

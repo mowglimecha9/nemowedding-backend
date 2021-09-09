@@ -7,6 +7,9 @@ let entourage = new Schema({
   },
   Vaccinated : {
     type: Boolean
+  },
+  Attending : {
+    type: Boolean
   }
 }, {
   collection: 'nemowedding'
