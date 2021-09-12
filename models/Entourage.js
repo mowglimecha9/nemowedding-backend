@@ -6,10 +6,16 @@ let entourage = new Schema({
     type: String
   },
   Vaccinated : {
-    type: Boolean
+    type: String
   },
   Attending : {
     type: Boolean
+  },
+  Message: {
+    type : String
+  },
+  Phone: {
+    type : String
   }
 }, {
   collection: 'nemowedding'
