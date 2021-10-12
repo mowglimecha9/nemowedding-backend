@@ -30,7 +30,7 @@ studentRoute.route('/getEntourage').get((req, res) => {
 });
 
 
-studentRoute.post('/test',upload.single('image'), async (req,res)=> {
+studentRoute.post('/uploadPhoto',upload.single('image'), async (req,res)=> {
    const file = req.file
    console.log(req.body)
    const result = await uploadFile(file)
