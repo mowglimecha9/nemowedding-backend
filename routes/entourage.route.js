@@ -7,15 +7,13 @@ const fs = require('fs')
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
 let Entourage = require('../models/Entourage');
-let Photo = require('../models/Photo');
 const { led } = require('../database');
-const { photoSchema } = require('../models/Photo');
 
  
 const multer = require('multer');
 const upload = multer({dest : 'uploads/'})
-const { uploadFile} = require('../s3');
-const { resourceLimits } = require('worker_threads');
+const { uploadFile,getFileStream} = require('../s3');
+var conn2 = mongoose.createConnection(database.led);
 
 
 studentRoute.route('/getEntourage').get((req, res) => {
@@ -38,7 +36,6 @@ studentRoute.post('/uploadPhoto',upload.single('image'), async (req,res)=> {
    console.log(result)
    res.send({imagePath: `/images/${result.Key}`})
 
-   var conn2 = mongoose.createConnection(database.led);
    conn2.model('Photo', new mongoose.Schema({
       imageKey : { type : String, default : ''},
       message: {type: String, default :''}
@@ -46,11 +43,25 @@ studentRoute.post('/uploadPhoto',upload.single('image'), async (req,res)=> {
        imageKey:result.Key,
        message:req.body.message
     })
-
-   
   
  })
 
+ studentRoute.route('/led-wall').get((req,res)=> {
+   conn2.model('Photo', new mongoose.Schema({
+      imageKey : { type : String, default : ''},
+      message: {type: String, default :''}
+    }),'photos').find({},(err,data) => {
+       res.json(data);
+    })
+ });
+
+
+ studentRoute.route('/images/:key').get((req, res) => {
+   const readStream = getFileStream(req.params.key)
+
+   readStream.pipe(res)
+ })
+ 
 
 studentRoute.route('/getEntourageByName/:q').get((req, res) => {
     Entourage.find({ Name: { $regex: req.params.q }, Attending:undefined},(error, data) => {
