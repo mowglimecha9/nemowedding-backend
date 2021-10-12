@@ -39,7 +39,7 @@ studentRoute.post('/uploadPhoto',upload.single('image'), async (req,res)=> {
    conn2.model('Photo', new mongoose.Schema({
       imageKey : { type : String, default : ''},
       message: {type: String, default :''}
-    })).create({
+    }),'photos').create({
        imageKey:result.Key,
        message:req.body.message
     })
