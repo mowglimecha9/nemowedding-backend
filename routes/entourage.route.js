@@ -11,7 +11,7 @@ const { led } = require('../database');
 
  
 const multer = require('multer');
-const upload = multer({dest : 'uploads/'})
+const upload = multer({dest : './uploads/'})
 const { uploadFile,getFileStream} = require('../s3');
 var conn2 = mongoose.createConnection(database.led);
 
